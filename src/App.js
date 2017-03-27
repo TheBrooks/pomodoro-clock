@@ -2,29 +2,57 @@ import React, { Component } from 'react';
 import './App.css';
 
 
-class TimeDisplayal extends React.Component {
-  render() {
-    //dynamically render this list
 
+
+
+class TimeDisplayal extends React.Component {
+  constructor(props){
+    super(props);
+  
+    this.unitsIntervals = [{
+      label: 'Seconds',
+      value: 60
+    },{
+      label: 'Minutes',
+      value: 60
+    },{
+      label: 'Hours',
+      value: 24
+    },{
+      label: 'Days',
+      value: 7
+    },{
+      label: 'Weeks',
+      value: 52
+    },{
+      label: 'Years',
+      value: 1
+    }];
+  }
+  render() {
+
+    var labeledNumberList = [];
     var timeRemaining = this.props.timeInSeconds;
-    var seconds = timeRemaining % 60;
-    var minutes = (timeRemaining - seconds) / 60;
+
+    this.unitsIntervals.forEach(function(unitInterval) {
+      if (labeledNumberList.length > 0 && timeRemaining === 0){
+        return;
+      }
+
+      var unitTime = timeRemaining % unitInterval.value;
+
+      labeledNumberList.push(<li key={unitInterval.label}><LabeledNumber number={unitTime} label={unitInterval.label} /></li>);
+
+      timeRemaining -= unitTime;
+      timeRemaining /= unitInterval.value;
+    });
+
+    labeledNumberList.reverse();
 
     return (
       <div className="TimeDisplayal">
         <ul>
-          <li>
-            <LabeledNumber
-              label="Minutes"
-              number={minutes}
-            />
-          </li>
-          <li>
-            <LabeledNumber
-              label="Seconds"
-              number={seconds}
-            />
-          </li>
+          {labeledNumberList}
         </ul>
       </div>
     ); 
@@ -184,22 +212,33 @@ class App extends Component {
   constructor(props){
     super(props);
     this.handleShifterStep = this.handleShifterStep.bind(this);
+    this.handleTitleChange = this.handleTitleChange.bind(this);
 
     this.state = ({
-      breakCounter: {
-        value: 5
-      },
-      workCounter: {
-        value: 25
-      }
+      cycles: [{
+        title: 'Work Length',
+        value: 1.5
+      },{
+        title: 'Break Length',
+        value: 1.2
+      }]
     });
+  }
 
+  handleTitleChange(index, e) {
+    var newTitle = e.target.value;
+    this.setState((prevState, props) => {
+      var counter = prevState.cycles[index];
+      counter.title = newTitle;
+
+      return counter;
+    });
   }
 
 
-  handleShifterStep(counterStr, step) {
+  handleShifterStep(index, step) {
     this.setState((prevState, props) => {
-      var counter = prevState[counterStr];
+      var counter = prevState.cycles[index];
       var newValue = counter.value + step;
       counter.value = newValue;
 
@@ -208,30 +247,30 @@ class App extends Component {
   }
 
   render() {
-    var timeCycles = [{
-      title: 'Work',
-      timeInSeconds: this.state.workCounter.value * 60
-    },{
-      title: 'Break',
-      timeInSeconds: this.state.breakCounter.value * 60
-    }];
+    var timeCycles = this.state.cycles.map(function(cycle) {
+      return { 
+        title: cycle.title,
+        timeInSeconds: Math.floor(cycle.value * 60) 
+      };
+    });
+
+    var valueShifters = this.state.cycles.map(function(cycle, index) {
+      return (
+        <div key={index} className="Shifter">
+          <div>
+            <input type="text" value={cycle.title} onChange={(e) => this.handleTitleChange(index, e)} />
+          </div>
+          <NumericValueShifter 
+          number={cycle.value}
+          onDecrement={() => this.handleShifterStep(index, -1)}
+          onIncrement={() => this.handleShifterStep(index, 1)} />
+        </div>
+      );
+    }.bind(this));
     
     return (
       <div className="App">
-        <div className="Shifter">
-          BREAK LENGTH
-          <NumericValueShifter 
-          number={this.state.breakCounter.value}
-          onDecrement={() => this.handleShifterStep('breakCounter', -1)}
-          onIncrement={() => this.handleShifterStep('breakCounter', 1)} />
-        </div>
-        <div className="Shifter">
-          WORK LENGTH
-          <NumericValueShifter 
-            number={this.state.workCounter.value}
-            onDecrement={() => this.handleShifterStep('workCounter', -1)}
-            onIncrement={() => this.handleShifterStep('workCounter', 1)} />
-        </div>
+        {valueShifters}
         <br />
         <StateCycleClock 
           timeCycles={timeCycles}

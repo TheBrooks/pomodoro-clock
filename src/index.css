@@ -1,3 +1,4 @@
+
 body {
   margin: 0;
   padding: 0;
@@ -48,10 +49,15 @@ body {
 }
 
 .NumericValueShifter {
+  display: inline-block;
+  width: 100%;
   font-size: 25px;
+  padding: 0px;
+  margin: 0px;
 }
 
 .NumericValueShifter button {
+  margin: 0px;
   padding: 4px 10px;
   font-size: inherit;
   border: none;
@@ -95,6 +101,7 @@ body {
 }
 
 .Shifter {
+
   font-size: 12px;
   font-weight: lighter;
 
@@ -102,6 +109,30 @@ body {
 
   margin: 10px;
   display: inline-block;
+}
+
+.Shifter div {
+  width: 100%;
+}
+
+.Shifter input {
+  display: inline-block;
+
+  text-align: center;
+  background-color: inherit;
+  border:none;
+  padding-bottom: 1px;
+}
+
+.Shifter input:hover {
+  border-bottom: 1px solid black;
+  padding-bottom: 0px;
+}
+
+.Shifter input:focus {
+  border-bottom: 1px solid black;
+  padding-bottom: 0px;
+  outline: 0;
 }
 
 .StateCycleClock {
