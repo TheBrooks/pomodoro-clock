@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 
-
-
-
-
 class TimeDisplayal extends React.Component {
   constructor(props){
     super(props);
@@ -189,14 +185,17 @@ class StateCycleClock extends React.Component {
   render() {
     var currentCycleIndex = Math.min(this.state.currentCycleIndex, this.props.timeCycles.length - 1);
     var currentCycle = this.props.timeCycles[currentCycleIndex];
+    
+    var title = currentCycle != null ? currentCycle.title : "";
+    var timeInSeconds = currentCycle != null ? currentCycle.timeInSeconds : 0;
 
     var buttonText = this.state.isRunning ? "Pause" : "Start";
 
     return (
       <div className="StateCycleClock">
-        <p className="StateCycleClockTitle">{currentCycle.title}</p>
+        <p className="StateCycleClockTitle">{title}</p>
         <CountDownTimer
-          timeInSeconds={currentCycle.timeInSeconds} 
+          timeInSeconds={timeInSeconds} 
           running={this.state.isRunning}
           onTimerDone={this.handleTimerFinished}
           />
@@ -213,6 +212,8 @@ class App extends Component {
     super(props);
     this.handleShifterStep = this.handleShifterStep.bind(this);
     this.handleTitleChange = this.handleTitleChange.bind(this);
+    this.handleAddTimeCycle = this.handleAddTimeCycle.bind(this);
+    this.handleRemoveTimeCycle = this.handleRemoveTimeCycle.bind(this);
 
     this.state = ({
       cycles: [{
@@ -246,6 +247,25 @@ class App extends Component {
     });
   }
 
+  handleAddTimeCycle() {
+    var newCycle = {
+      title: "Time Cycle",
+      value: 5
+    }
+    this.setState((prevState, props) => {
+      var cycles = prevState.cycles;
+      return cycles.push(newCycle);
+    });
+  }
+
+  handleRemoveTimeCycle(index) {
+    this.setState((prevState, props) => {
+      var cycles = prevState.cycles;
+      cycles.splice(index, 1);
+      return cycles;
+    });
+  }
+
   render() {
     var timeCycles = this.state.cycles.map(function(cycle) {
       return { 
@@ -256,14 +276,17 @@ class App extends Component {
 
     var valueShifters = this.state.cycles.map(function(cycle, index) {
       return (
-        <div key={index} className="Shifter">
-          <div>
-            <input type="text" value={cycle.title} onChange={(e) => this.handleTitleChange(index, e)} />
+        <div key={index} className="Butts">
+          <div className="Shifter">
+            <div>
+              <input type="text" value={cycle.title} onChange={(e) => this.handleTitleChange(index, e)} />
+            </div>
+            <NumericValueShifter 
+            number={cycle.value}
+            onDecrement={() => this.handleShifterStep(index, -1)}
+            onIncrement={() => this.handleShifterStep(index, 1)} />
           </div>
-          <NumericValueShifter 
-          number={cycle.value}
-          onDecrement={() => this.handleShifterStep(index, -1)}
-          onIncrement={() => this.handleShifterStep(index, 1)} />
+          <button className="RemoveTimeCycleButton"onClick={() => this.handleRemoveTimeCycle(index)}>×</button>
         </div>
       );
     }.bind(this));
@@ -271,6 +294,8 @@ class App extends Component {
     return (
       <div className="App">
         {valueShifters}
+        <br />
+        <button className="AddTimeCycleButton" onClick={this.handleAddTimeCycle}>Add Cycle</button>
         <br />
         <StateCycleClock 
           timeCycles={timeCycles}

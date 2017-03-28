@@ -1,12 +1,27 @@
 TODO:
-TimeDisplayal to use twitter bootstrap
 
-add and remove TimeCycles creation
+html
+==================
+Make mobile friendly:
+	-on corporate twitter bootstrap
 
+change favicon
+
+features
+==================
 make ping noise when each cycle is done
 background color settable per cycle
 
+organization
+==================
 pull in web pack
+ 	-divide out files
+ 	-pull in bootstrap via webpack
+ 	-convert to scss
+
+documentation
+==================
 update read me
-leard github readme syntax
+  -learn github readme syntax
+
 

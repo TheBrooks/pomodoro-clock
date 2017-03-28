@@ -113,15 +113,16 @@ body {
 
 .Shifter div {
   width: 100%;
+  padding: 6px 0px;
 }
 
 .Shifter input {
   display: inline-block;
-
   text-align: center;
   background-color: inherit;
-  border:none;
+  border: none;
   padding-bottom: 1px;
+  width: 80%;
 }
 
 .Shifter input:hover {
@@ -145,4 +146,52 @@ body {
   text-align: left;
   font-weight: lighter;
   margin-bottom: 0px;
+}
+
+.AddTimeCycleButton {
+  border: none;
+  display: inline-block;
+  background-color: #3FC380;
+  width: 100%;
+  font-size: 24px;
+  padding: 12px 12px;
+}
+
+.AddTimeCycleButton:hover {
+  background-color: #66CC99;
+}
+
+.AddTimeCycleButton:focus {
+  outline: none;
+}
+
+.RemoveTimeCycleButton {
+  position: absolute;
+  border: none;
+  top:10px;
+  right: 10px;
+  width: 20px;
+  height: 20px;
+  border-radius: 500px;
+  font-size:14px;
+  margin:0;
+  cursor: pointer;
+  display: none;
+  content: '×';
+  line-height: 0px;
+}
+.Butts:hover  .RemoveTimeCycleButton {
+  display: inline-block;
+}
+
+.RemoveTimeCycleButton:hover {
+}
+
+.RemoveTimeCycleButton:focus {
+  outline: 0;
+}
+
+.Butts {
+  display: inline-block;
+  position: relative;
 }

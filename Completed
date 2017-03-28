@@ -6,3 +6,14 @@ TimeDisplayal to compute list dynamically
 change time cycle title to be editable
 
 cycle time now takes list
+
+
+add and remove TimeCycles creation
+	-add button to add cycle unstyled
+	- hook up javascript to add 
+	-add button per cycle with 'x'
+	-hook up javascipt so clicking 'x' will delete that cycle
+	-style both buttons
+
+	
+change tab name
