@@ -22,7 +22,7 @@ class TimeDisplayal extends React.Component {
       value: 52
     },{
       label: 'Years',
-      value: 1
+      value: 0
     }];
   }
   render() {
@@ -34,11 +34,13 @@ class TimeDisplayal extends React.Component {
       if (labeledNumberList.length > 0 && timeRemaining === 0){
         return;
       }
-
-      var unitTime = timeRemaining % unitInterval.value;
+      var unitValue = unitInterval.value;
+      var unitTime = timeRemaining;  
+      if(unitValue > 0){
+        unitTime %= unitValue;  
+      }
 
       labeledNumberList.push(<li key={unitInterval.label}><LabeledNumber number={unitTime} label={unitInterval.label} /></li>);
-
       timeRemaining -= unitTime;
       timeRemaining /= unitInterval.value;
     });
@@ -218,7 +220,7 @@ class App extends Component {
     this.state = ({
       cycles: [{
         title: 'Work Length',
-        value: 1.5
+        value: 3500000
       },{
         title: 'Break Length',
         value: 1.2
