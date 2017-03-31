@@ -1,4 +1,7 @@
-class StateCycleClock extends React.Component {
+import React from 'react';
+import CountDownTimer from '../CountDownTimer/CountDownTimer';
+
+export default class StateCycleClock extends React.Component {
   constructor(props) {
     super(props);
     this.handleTimerFinished = this.handleTimerFinished.bind(this);
@@ -16,27 +19,33 @@ class StateCycleClock extends React.Component {
   }
 
   handleTimerFinished() {
-    this.setState((prevState, props) = {
+    this.setState((prevState, props) => {
       var nextCycleIndex = prevState.currentCycleIndex + 1;
       nextCycleIndex = nextCycleIndex < props.timeCycles.length ? nextCycleIndex : 0;
       return {currentCycleIndex: nextCycleIndex};
     });
   }
-
+  
   render() {
     var currentCycleIndex = Math.min(this.state.currentCycleIndex, this.props.timeCycles.length - 1);
     var currentCycle = this.props.timeCycles[currentCycleIndex];
+    
+    var title = currentCycle != null ? currentCycle.title : "";
+    var timeInSeconds = currentCycle != null ? currentCycle.timeInSeconds : 0;
 
     var buttonText = this.state.isRunning ? "Pause" : "Start";
 
     return (
-      <h1>{currentCycle.title}</h1>
-      <CounterTimer
-        timeInSeconds={currentCycle.timeInSeconds} 
-        running={this.state.isRunning}
-        onTimerDone={this.handleTimerFinished}
-        />
+      <div className="StateCycleClock">
+        <p className="StateCycleClockTitle">{title}</p>
+        <CountDownTimer
+          timeInSeconds={timeInSeconds} 
+          running={this.state.isRunning}
+          onTimerDone={this.handleTimerFinished}
+          />
+          <br />
         <button className="TimerButton" onClick={this.handleTimerToggle}>{buttonText}</button>
+      </div>
     );
   }
 }
