@@ -17,7 +17,7 @@ class App extends Component {
     this.state = ({
       cycles: [{
         title: 'Work Length',
-        value: 3500000
+        value: 35
       },{
         title: 'Break Length',
         value: 1.2

@@ -11,7 +11,7 @@ module.exports = {
   entry: './src/index.js',
   //devtool: debug ? "inline-sourcemap" : false,
   output: { 
-    path: path.resolve("/dist"),
+    path: path.resolve("dist"),
     filename: 'index_bundle.js' 
   },
   module: {
